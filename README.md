@@ -1,2 +1,2 @@
 # cwb_weatherAPI
-The code for grabbing the data from CWB
+The code for grabbing weather data from CWB
