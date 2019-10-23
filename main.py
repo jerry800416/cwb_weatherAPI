@@ -39,6 +39,6 @@ if now.hour == 3:
         result = check_miss_time(ref.db_info,ref.insert_db_name,segid_tb[0],24)
         if len(result) != 0:
             for i in result:
-                cwb_DTR(i,segid_tb[0],grid_lat,grid_lon,ref.log_path,"TowerBase_Gridwell")
+                cwb_DTR(i+timedelta(hours=1),segid_tb[0],grid_lat,grid_lon,ref.log_path,"TowerBase_Gridwell")
 
 go_to_log(ref.log_path,'all data update')
