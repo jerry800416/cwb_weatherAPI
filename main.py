@@ -13,7 +13,7 @@ import ref
 #######################################
 
 
-now = datetime.now()
+now = datetime.now()+timedelta(hours=1)
 grid_lat,grid_lon=load_grid_data()
 # 正常傳資料(架空)
 segids = connect_DB(ref.db_info,"Gridwell",ref.sql,'select',0)
@@ -27,13 +27,13 @@ for segid_tb in segids_towerbase:
 
 
 # 半夜三點補傳資料
-if now.hour == 3:
+if now.hour != 3:
     #補傳架空資料
     for segid in segids:
         result = check_miss_time(ref.db_info,ref.insert_db_name,segid[0],24)
         if len(result) != 0:
             for i in result:
-                cwb_DTR(i,segid[0],grid_lat,grid_lon,ref.log_path,"Gridwell")
+                cwb_DTR(i+timedelta(hours=1),segid[0],grid_lat,grid_lon,ref.log_path,"Gridwell")
     #補傳塔基資料
     for segid_tb in segids_towerbase:
         result = check_miss_time(ref.db_info,ref.insert_db_name,segid_tb[0],24)
