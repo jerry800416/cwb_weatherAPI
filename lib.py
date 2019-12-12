@@ -197,6 +197,7 @@ def cwb_DTR(time,segid,grid_lat,grid_lon,log_path,dbname):
     node_temp = fcg.update_data_with_type("temp")
     node_wd = fcg.update_data_with_type("wd")
     node_rh = fcg.update_data_with_type("rh")
+    node_rain = fcg.update_data_with_type("rain")
     # 若無值迴圈拉取上一筆資料
     lttime = time 
     while -1 in [node_ws,node_temp,node_wd]:
