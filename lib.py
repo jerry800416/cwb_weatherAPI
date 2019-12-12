@@ -197,8 +197,17 @@ def cwb_DTR(time,segid,grid_lat,grid_lon,log_path,dbname):
     node_temp = fcg.update_data_with_type("temp")
     node_wd = fcg.update_data_with_type("wd")
     node_rh = fcg.update_data_with_type("rh")
-    if dbname == "TowerBase_Gridwell":
+    # 若無值迴圈拉取上一筆資料
+    lttime = time 
+    while -1 in [node_ws,node_temp,node_wd]:
+        lttime += timedelta(hours =-1)
+        fcg = find_closest_grid(ref.data_path,lttime,p1[0],p1[1],grid_lat,grid_lon,ref.log_path)
+        node_ws = fcg.update_data_with_type("ws")
+        node_temp = fcg.update_data_with_type("temp")
+        node_wd = fcg.update_data_with_type("wd")
+        node_rh = fcg.update_data_with_type("rh")
         node_rain = fcg.update_data_with_type("rain")
+
     # 計算dtr
     if -1 not in [node_ws,node_temp]:
         DTR = round(Solve_I(Tc,node_temp,He,node_ws,day,h,p1,p2,D0),2)
@@ -208,10 +217,9 @@ def cwb_DTR(time,segid,grid_lat,grid_lon,log_path,dbname):
     if dbname == "TowerBase_Gridwell":
         sql = "INSERT INTO `{}`(time,WS,WD,temp,DTR,RH,rainfall) VALUES ('{}',{},{},{},{},{},{})".format(segid,scandate.strftime("%Y-%m-%d %H:00:00"),node_ws,node_wd,node_temp,DTR,node_rh,node_rain)
     else:
-        sql = "INSERT INTO `{}`(time,WS,WD,temp,DTR,RH) VALUES ('{}',{},{},{},{},{})".format(segid,scandate.strftime("%Y-%m-%d %H:00:00"),node_ws,node_wd,node_temp,DTR,node_rh)
+        sql = "INSERT INTO `{}`(time,WS,WD,temp,DTR,RH,rainfall) VALUES ('{}',{},{},{},{},{},{})".format(segid,scandate.strftime("%Y-%m-%d %H:00:00"),node_ws,node_wd,node_temp,DTR,node_rh,node_rain)
     # TODO
     connect_DB(ref.db_info,ref.insert_db_name,sql,'insert',0)
     # connect_DB(ref.db_info2,ref.insert_db_name,sql,'insert',0)
-    # print(sql)
 
     

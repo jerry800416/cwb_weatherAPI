@@ -27,7 +27,7 @@ for segid_tb in segids_towerbase:
 
 
 # 半夜三點補傳資料
-if now.hour != 3:
+if now.hour == 3:
     #補傳架空資料
     for segid in segids:
         result = check_miss_time(ref.db_info,ref.insert_db_name,segid[0],24)
